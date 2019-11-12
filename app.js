@@ -1,15 +1,26 @@
 window.onload = function(){
    
-  getListofMembers();
+  document.getElementById('button').onclick = function(){
+    show_result(document.getElementById('text').value)
+  }
 }
 
-function getListofMembers(){
-    var xmlHttp = new XMLHttpRequest();
-    	xmlHttp.open("GET","http://localhost:8080/superheroes.php",true);
-    	xmlHttp.send(null)
+function show_result(str) {  
+  
+  if (window.XMLHttpRequest) {
+    xmlhttpreq=new XMLHttpRequest();
+  } 
+  else { 
+    xmlhttpreq=new ActiveXObject('Microsoft.XMLHTTP');
+  }
 
-    response = xmlHttp.responseText
-    console.log(response)
-    document.getElementById("srchbutton").onclick = function(){
-        alert(xmlHttp.responseText)
-    }}
+  xmlhttpreq.onreadystatechange=function() { 
+    
+    if (this.readyState==4 && this.status==200) {
+      document.getElementById("resultsSection").innerHTML=this.responseText;
+
+    }
+  }
+  xmlhttpreq.open("GET","http://localhost:8080/superheroes.php?q="+str,true);
+  xmlhttpreq.send();
+}
